@@ -11,7 +11,7 @@ final class PokemonAPIModel {
     private(set) var pokemonName: String?
     private(set) var pokemonImageData: Data?
 
-    func getPokemonName(id: Int) {
+    func getPokemonName(id: Int, complition: @escaping () -> Void) {
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(id)/") else { return }
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if error != nil {
@@ -30,8 +30,10 @@ final class PokemonAPIModel {
                 let url = URL(string: image.frontImage)
                 self.pokemonImageData = try? Data(contentsOf: url!)
                 self.pokemonName = name
+                print(name)
                 print("2")
             }
+            complition()
         }
         task.resume()
     }
